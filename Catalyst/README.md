@@ -1,11 +1,11 @@
 # Programming Evaluation For Catalyst IT Australia Pty Limited
 user_upload.py
 
-- [ ] PostgreSQL
+- [x] PostgreSQL (v12.0)
   - [x] Connect
   - [x] Create table 'users'
     - [x] email as PK
-    - [ ] Drop then Recreate? 
+    - [x] Drop then Recreate? 
   - [ ] Insert
 - [x] Capitalise Names
   - [x] Special Cases

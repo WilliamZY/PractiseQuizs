@@ -43,18 +43,32 @@ for arg in argList:
         create_table()  # Todo
 
 # Connect to Postgres
+# pg_connect = psycopg2.connect(
+#     database="postgres",
+#     user=pg_username,
+#     password=pg_userpassword,
+#     host=pg_host.split(":")[0],
+#     port=pg_host.split(":")[1],
+# )
 pg_connect = psycopg2.connect(
     database="postgres",
-    user=pg_username,
-    password=pg_userpassword,
-    host=pg_host.split(":")[0],
-    port=pg_host.split(":")[1],
+    user="postgres",
+    password="123456",
+    host="localhost",
+    port="54322",
 )
+pg_connect.autocommit = True
 # create a cursor object
 cursor = pg_connect.cursor()
+cursor.execute("DROP TABLE IF EXISTS users;")
+
 cursor.execute(
-    "CREATE TABLE users (surname varchar, surname varchar, email varchar PRIMARY KEY);"
+    "create table users ( name varchar, surname varchar, email varchar(128) not null constraint users_pkey primary key);"
 )
+
+cursor.execute("alter table users owner to postgres;")
+
+cursor.execute("create unique index users_email_uindex on users (email);")
 
 # cursor.execute("select version()")
 # use fetchone()to fetch single line
