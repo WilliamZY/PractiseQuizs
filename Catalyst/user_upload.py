@@ -1,14 +1,13 @@
 # -*- coding:UTF-8 -*-
 
 import psycopg2
-import sys
+import sys, re
 import pandas as pd
-import string, regex
 
 # Read CSV & Capitalise Names
-filename = "users.csv"
+validemail_regex = re.compile(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
 df = pd.read_csv(
-    filename,
+    input_csv,
     index_col=None,
     # header=None
 )
