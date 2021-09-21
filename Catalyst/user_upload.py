@@ -14,7 +14,7 @@ def main():
     for arg in argList:
         if "--file" in arg:
             input_csv = arg.split("=")[-1]
-            parsecsv(input_csv)
+            parseCSV(input_csv)
 
         if "--create_table" in arg:
             create_table()  # Todo
@@ -42,7 +42,18 @@ if __name__ == "__main__":
 validemail_regex = re.compile(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
 
 
-def parsecsv(input_csv, dryrun=False):
+def insertToDB(dataFrame, index, dryrun=False):
+    cursor.execute(
+        "INSERT INTO users (name, surname, email) VALUES (%s,%s,%s) ON CONFLICT (email) DO UPDATE SET Name= Excluded.Name;",
+        (
+            dataFrame.name[index].title(),
+            dataFrame.surname[index].title(),
+            dataFrame.email[index].lower(),
+        ),
+    )
+
+
+def parseCSV(input_csv, dryrun=False):
     df = pd.read_csv(
         input_csv,
         index_col=None,
@@ -54,11 +65,7 @@ def parsecsv(input_csv, dryrun=False):
         if not validemail_regex.match(df.email[index].replace(" ", "")):
             sys.stdout.write("Invalid email found: %s \n" % df.email[index])
         else:
-            print(
-                df.name[index].title(),
-                df.surname[index].title(),
-                df.email[index].lower(),
-            )
+            insertToDB(df, index)
 
 
 # Connect to Postgres

@@ -4,13 +4,14 @@ user_upload.py
 - [x] PostgreSQL (v12.0)
   - [x] Connect
   - [x] Create table 'users'
-    - [x] email as PK
+    - [x] email as PK & unique index
     - [x] Drop then Recreate? 
   - [ ] Insert
+    - [x] INSERT INTO
 - [x] Capitalise Names
   - [x] Special Cases
     - [x] o'reilly -> O'Reilly
-    - [ ] remove tab from names (Waiting details or make assumptions)
+    - [x] remove tab from names (data cleaning)
 - [x] Valid emails should be lower cases
   - [x] AAA@BB.CC..DD invalid exclusion
 - [ ] Command line directives
@@ -21,7 +22,10 @@ user_upload.py
   - [ ] --help
   - [ ] --create_table
   - [ ] --dry_run
-- [ ] Error message on STDOUT 
+- [x] Error message on STDOUT 
+  - [x] Invalid
+  - [ ] DB error
+  - [ ] exceptions
 - [ ] User documentations
   - [ ] Dependences
   - [ ] Comments
