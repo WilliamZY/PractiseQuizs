@@ -1,35 +1,25 @@
-# Programming Evaluation For Catalyst IT Australia Pty Limited
-user_upload.py
+# User Documentation
 
-- [x] PostgreSQL (v12.0)
-  - [x] Connect
-  - [x] Create table 'users'
-    - [x] email as PK & unique index
-    - [x] Drop then Recreate? 
-  - [x] Insert
-    - [x] INSERT INTO
-    - [x] ON CONFLICT
-      - [ ] catch exception
-- [x] Capitalise Names
-  - [x] Special Cases
-    - [x] o'reilly -> O'Reilly
-    - [x] remove tab from names (data cleaning)
-- [x] Valid emails should be lower cases
-  - [x] AAA@BB.CC..DD invalid exclusion
-  - [x] remove/exclude spaces
-- [ ] Command line directives **不能用sys.argv**
-  - [x] -h
-  - [x] -u
-  - [x] -p
-  - [x] --file
-  - [x] --help
-  - [x] --create_table
-  - [ ] --dry_run
-- [x] Error message on STDOUT 
-  - [x] Invalid
-  - [ ] DB error
-  - [x] exceptions
-- [ ] User documentations
-  - [ ] Dependences
-  - [ ] Comments
-  - [ ] System assumptions
+## Dependency:
+
+- from **apt**: python3-pip python3-psycopg2 
+
+  After install, using pip3 to install other dependencies 
+
+- from **pip3**: numpy pandas getopt re sys 
+
+## Assumptions:
+
+- all the records from the csv file are valid, no empty field in any row or column
+- both name and surname can have symbols in it
+- prefix of a valid email address can only have [0-9a-zA-Z-_+.] in it, without square brackets, The [reference](https://en.wikipedia.org/wiki/Email_address#Syntax)  I looked up when attempting this.
+
+## Design:
+
+- all data read from the csv file will be **slightly processed** to remove ending spaces/tabs
+- **--create_table** will only create table and will prevent changes to the user table after rebuilt
+- **-h** PostgreSQL host support [host]:[port] format, and will be validated with regular expression, it will only support two formats: IPv4 address with port, or localhost with ports, and port must be a logically valid port.
+  - localhost:5432
+  - 0.0.0.0:5432
+- Other information are included in the program and can be viewed through '--help'
+
