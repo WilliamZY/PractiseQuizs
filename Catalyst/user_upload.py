@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding:UTF-8 -*-
 
 import psycopg2
@@ -33,10 +34,6 @@ def create_table(pg_username, pg_userpassword, pg_host, pg_port):
         cursor.execute("create unique index users_email_uindex on users (email);")
         cursor.close()
         pg_connect.close()
-        # cursor.execute("select version()")
-        # use fetchone()to fetch single line
-        # data = cursor.fetchone()
-        # print("pg_Connectection established to: ", data)
 
 
 def showhelp():
@@ -68,27 +65,6 @@ def showhelp():
     print("user_upload.py --help")
 
 
-# # Connect to Postgres
-# pg_connect = psycopg2.connect(
-#     database="postgres",
-#     user=pg_username,
-#     password=pg_userpassword,
-#     host=pg_host,
-#     port=pg_port,
-# )
-# # pg_connect = psycopg2.connect(
-# #     database="postgres",
-# #     user="postgres",
-# #     password="123456",
-# #     host="localhost",
-# #     port="54322",
-# # )
-
-# # create a cursor object
-# cursor = pg_connect.cursor()
-# # Close connection
-# pg_connect.close()
-
 # email validation
 validemail_regex = re.compile(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
 
@@ -96,7 +72,6 @@ validemail_regex = re.compile(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
 def insertToDB(pg_username, pg_userpassword, pg_host, pg_port, dataFrame, index):
     print(dryrun)
     if not dryrun:
-        Connect to Postgres
         pg_connect = psycopg2.connect(
             database="postgres",
             user=pg_username,
