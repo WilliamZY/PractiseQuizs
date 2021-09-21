@@ -48,7 +48,7 @@ try:
 except getopt.GetoptError as err:
     sys.stdout.write("Invalid command: %s \n" % str(err).upper())
     sys.stdout.write(
-        "Seems like you don't know what to do \nHow  about use '--help' to read the help file?\nExamples: \nuser_upload.py --help"
+        "Seems like you don't know what to do \nHow about using '--help' to read the help file?\nExamples: \nuser_upload.py --help"
     )
     sys.exit(2)
 for opt, arg in opts:

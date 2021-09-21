@@ -17,9 +17,11 @@
 ## Design:
 
 - all data read from the csv file will be **slightly processed** to remove ending spaces/tabs
+- Error messages are reported to STDOUT
 - **--create_table** will only create table and will prevent changes to the user table after rebuilt
 - **-h** PostgreSQL host support [host]:[port] format, and will be validated with regular expression, it will only support two formats: IPv4 address with port, or localhost with ports, and port must be a logically valid port.
   - localhost:5432
   - 0.0.0.0:5432
+- When there are duplicate email conflicts during insertion, old information like name and surname will be updated by newer information
 - Other information are included in the program and can be viewed through '--help'
 
