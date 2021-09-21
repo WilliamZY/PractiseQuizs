@@ -4,42 +4,62 @@ import psycopg2
 import sys, re
 import pandas as pd
 
-# Read CSV & Capitalise Names
-validemail_regex = re.compile(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
-df = pd.read_csv(
-    input_csv,
-    index_col=None,
-    # header=None
-)
-df.columns = ["name", "surname", "email"]
 
-for index, row in df.iterrows():
-    print(df.name[index].title(), df.surname[index].title(), df.email[index].lower())
-# save df into a Dict
+def main():
+    # Parse cli arguments
+    argList = []
+    for i in range(len(sys.argv) - 1):
+        argList.append(sys.argv[i + 1])
+    # print(f"Arguments of the script : {sys.argv[1:]=}")
+    for arg in argList:
+        if "--file" in arg:
+            input_csv = arg.split("=")[-1]
+            parsecsv(input_csv)
+
+        if "--create_table" in arg:
+            create_table()  # Todo
+
+        if "--dry_run" in arg:
+            dry_run()  # Todo
+
+        if "-u=" in arg:
+            pg_username = arg.split("=")[-1]
+
+        if "-p=" in arg:
+            pg_userpassword = arg.split("=")[-1]
+
+        if "-h=" in arg:
+            pg_host = arg.split("=")[-1]
+
+        if "--help" in arg:
+            showhelp()  # Todo
+
+
+if __name__ == "__main__":
+    main()
+
 # email validation
+validemail_regex = re.compile(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
 
-# Parse cli arguments
-argList = []
-for i in range(len(sys.argv) - 1):
-    argList.append(sys.argv[i + 1])
-# print(f"Arguments of the script : {sys.argv[1:]=}")
-# print(f"Arguments of the script : "+str(argList))
 
-for arg in argList:
-    if "--file" in arg:
-        input_csv = arg.split("=")[-1]
+def parsecsv(input_csv, dryrun=False):
+    df = pd.read_csv(
+        input_csv,
+        index_col=None,
+        # header=None
+    )
+    df.columns = ["name", "surname", "email"]
 
-    if "-u=" in arg:
-        pg_username = arg.split("=")[-1]
+    for index, row in df.iterrows():
+        if not validemail_regex.match(df.email[index].replace(" ", "")):
+            sys.stdout.write("Invalid email found: %s \n" % df.email[index])
+        else:
+            print(
+                df.name[index].title(),
+                df.surname[index].title(),
+                df.email[index].lower(),
+            )
 
-    if "-p=" in arg:
-        pg_userpassword = arg.split("=")[-1]
-
-    if "-h=" in arg:
-        pg_host = arg.split("=")[-1]
-
-    if "create_table" in arg:
-        create_table()  # Todo
 
 # Connect to Postgres
 # pg_connect = psycopg2.connect(

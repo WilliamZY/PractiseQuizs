@@ -10,9 +10,9 @@ user_upload.py
 - [x] Capitalise Names
   - [x] Special Cases
     - [x] o'reilly -> O'Reilly
-    - [ ] remove tab from names
+    - [ ] remove tab from names (Waiting details or make assumptions)
 - [x] Valid emails should be lower cases
-  - [ ] AAA@BB.CC..DD invalid exclusion
+  - [x] AAA@BB.CC..DD invalid exclusion
 - [ ] Command line directives
   - [x] -h
   - [x] -u
