@@ -22,13 +22,13 @@ user_upload.py
   - [x] -u
   - [x] -p
   - [x] --file
-  - [ ] --help
-  - [ ] --create_table
+  - [x] --help
+  - [x] --create_table
   - [ ] --dry_run
 - [x] Error message on STDOUT 
   - [x] Invalid
   - [ ] DB error
-  - [ ] exceptions
+  - [x] exceptions
 - [ ] User documentations
   - [ ] Dependences
   - [ ] Comments

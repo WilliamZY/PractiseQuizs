@@ -1,7 +1,7 @@
 # -*- coding:UTF-8 -*-
 
 import psycopg2
-import sys, re
+import sys, re, getopt
 import pandas as pd
 
 
@@ -11,8 +11,8 @@ def create_table(pg_username, pg_userpassword, pg_host):
     #     database="postgres",
     #     user=pg_username,
     #     password=pg_userpassword,
-    #     host=pg_host.split(":")[0],
-    #     port=pg_host.split(":")[1],
+    #     host=pg_host,
+    #     port=pg_port,
     # )
     pg_connect = psycopg2.connect(
         database="postgres",
@@ -31,38 +31,63 @@ def create_table(pg_username, pg_userpassword, pg_host):
     )
 
     cursor.execute("alter table users owner to postgres;")
-
     cursor.execute("create unique index users_email_uindex on users (email);")
+
+
+def showhelp():
+    print()
+    print(
+        "Usage: user_upload.py -u [username] -p [password] -h [host]:[port] -file [csv filename] --create_table \n"
+    )
+    print("""-u username """)
+    print("""      PostgreSQL username""")
+    print("""-p password """)
+    print("""      PostgreSQL password""")
+    print("""-h host:port """)
+    print("""      PostgreSQL host address""")
+    print("""--file [csv filename] """)
+    print("""      This is the name of the CSV to be parsed""")
+    print("""--dry_run """)
+    print("""      This will be used with '--file' in case we want to""")
+    print("""      run the script but don't want insert the Database""")
+    print("""--create_table """)
+    print("""      This will create the users table in PostgreSQL Database""")
+    print("""--help """)
+    print("""      This will output the above list of directives""")
+
+    print("Examples: ")
+    print("user_upload.py -u username -p password -h 0.0.0.0:5432 --create_table")
+    print(
+        "user_upload.py -u username -p password -h 0.0.0.0:5432 --create_table -file users.csv --dry_run"
+    )
+    print("user_upload.py --help")
 
 
 def main():
     # Parse cli arguments
-    argList = []
-    for i in range(len(sys.argv) - 1):
-        argList.append(sys.argv[i + 1])
-    # print(f"Arguments of the script : {sys.argv[1:]=}")
-    for arg in argList:
-        if "--file" in arg:
-            input_csv = arg.split("=")[-1]
-            parseCSV(input_csv)
-
-        if "--create_table" in arg:
-            create_table()  # Todo
-
-        if "--dry_run" in arg:
-            dry_run()  # Todo
-
-        if "-u=" in arg:
-            pg_username = arg.split("=")[-1]
-
-        if "-p=" in arg:
-            pg_userpassword = arg.split("=")[-1]
-
-        if "-h=" in arg:
-            pg_host = arg.split("=")[-1]
-
-        if "--help" in arg:
-            showhelp()  # Todo
+    try:
+        opts, args = getopt.getopt(
+            sys.argv[1:], "u:p:h:", ["file=", "create_table", "dry_run", "help"]
+        )
+    except getopt.GetoptError as err:
+        sys.stdout.write("Invalid email found: %s \n" % str(err).upper())
+        return
+    for opt, arg in opts:
+        if opt in ["-u"]:
+            pg_username = arg
+        elif opt in ["-p"]:
+            pg_userpassword = arg
+        elif opt in ["-h"]:
+            if ":" in arg:
+                pg_host, pg_port = arg.split(":")
+        elif opt in ["--create_table"]:
+            create_table()
+        elif opt in ["--file"]:
+            input_csv = arg
+        elif opt in ["--dry_run"]:
+            dryrun = True
+        elif opt in ["--help"]:
+            showhelp()
 
 
 if __name__ == "__main__":
