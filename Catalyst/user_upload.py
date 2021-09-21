@@ -5,6 +5,36 @@ import sys, re
 import pandas as pd
 
 
+def create_table(pg_username, pg_userpassword, pg_host):
+    # Connect to Postgres
+    # pg_connect = psycopg2.connect(
+    #     database="postgres",
+    #     user=pg_username,
+    #     password=pg_userpassword,
+    #     host=pg_host.split(":")[0],
+    #     port=pg_host.split(":")[1],
+    # )
+    pg_connect = psycopg2.connect(
+        database="postgres",
+        user="postgres",
+        password="123456",
+        host="localhost",
+        port="54322",
+    )
+    pg_connect.autocommit = True
+    # create a cursor object
+    cursor = pg_connect.cursor()
+    cursor.execute("DROP TABLE IF EXISTS users;")
+
+    cursor.execute(
+        "create table users ( name varchar, surname varchar, email varchar(128) not null constraint users_pkey primary key);"
+    )
+
+    cursor.execute("alter table users owner to postgres;")
+
+    cursor.execute("create unique index users_email_uindex on users (email);")
+
+
 def main():
     # Parse cli arguments
     argList = []
@@ -48,7 +78,7 @@ def insertToDB(dataFrame, index, dryrun=False):
         (
             dataFrame.name[index].title(),
             dataFrame.surname[index].title(),
-            dataFrame.email[index].lower(),
+            dataFrame.email[index].lower().replace(" ", ""),
         ),
     )
 
@@ -67,34 +97,6 @@ def parseCSV(input_csv, dryrun=False):
         else:
             insertToDB(df, index)
 
-
-# Connect to Postgres
-# pg_connect = psycopg2.connect(
-#     database="postgres",
-#     user=pg_username,
-#     password=pg_userpassword,
-#     host=pg_host.split(":")[0],
-#     port=pg_host.split(":")[1],
-# )
-pg_connect = psycopg2.connect(
-    database="postgres",
-    user="postgres",
-    password="123456",
-    host="localhost",
-    port="54322",
-)
-pg_connect.autocommit = True
-# create a cursor object
-cursor = pg_connect.cursor()
-cursor.execute("DROP TABLE IF EXISTS users;")
-
-cursor.execute(
-    "create table users ( name varchar, surname varchar, email varchar(128) not null constraint users_pkey primary key);"
-)
-
-cursor.execute("alter table users owner to postgres;")
-
-cursor.execute("create unique index users_email_uindex on users (email);")
 
 # cursor.execute("select version()")
 # use fetchone()to fetch single line

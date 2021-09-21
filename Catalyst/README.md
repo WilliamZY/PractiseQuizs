@@ -6,15 +6,18 @@ user_upload.py
   - [x] Create table 'users'
     - [x] email as PK & unique index
     - [x] Drop then Recreate? 
-  - [ ] Insert
+  - [x] Insert
     - [x] INSERT INTO
+    - [x] ON CONFLICT
+      - [ ] catch exception
 - [x] Capitalise Names
   - [x] Special Cases
     - [x] o'reilly -> O'Reilly
     - [x] remove tab from names (data cleaning)
 - [x] Valid emails should be lower cases
   - [x] AAA@BB.CC..DD invalid exclusion
-- [ ] Command line directives
+  - [x] remove/exclude spaces
+- [ ] Command line directives **不能用sys.argv**
   - [x] -h
   - [x] -u
   - [x] -p
